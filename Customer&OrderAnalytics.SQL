@@ -14,7 +14,7 @@ SELECT COUNT(orderid)
 FROM BIT_DB.JanSales
 WHERE Product='iPhone'
 AND length(orderid) = 6 
-AND orderid <> 'Order ID'
+AND orderid <> 'Order ID';
 
 
 /*#3. Select the customer account numbers for all the orders that were placed in February. 
@@ -38,7 +38,7 @@ LIMIT 1;
 
 SELECT Product, (SUM( Quantity)* price) AS REVENUE
 FROM BIT_DB.JanSales
-GROUP BY Product
+GROUP BY Product;
 
 
 /*#6. Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
@@ -58,4 +58,12 @@ LEFT JOIN BIT_DB.customers cus
 ON FEB.orderid=cus.order_id
 WHERE Feb.Quantity > 2
 AND length(orderid) = 6 
-AND orderid <> 'Order ID'
+AND orderid <> 'Order ID';
+
+
+/*#7. List all the products sold in Los Angeles in February, and include how many of each were sold.
+
+SELECT Product, SUM(Quantity)
+FROM BIT_DB.FebSales
+WHERE location LIKE '%Los Angeles%'
+GROUP BY Product; 
