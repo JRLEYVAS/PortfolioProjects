@@ -1,0 +1,117 @@
+SELECT FirstName, LastName, CustomerID, Country
+FROM customers
+WHERE Country <> 'USA';
+
+
+
+SELECT FirstName, LastName, CustomerID, Country
+FROM customers
+WHERE Country = 'Brazil';
+
+
+
+SELECT DISTINCT BillingCountry
+FROM Invoices
+ORDER BY BillingCountry;
+
+
+
+
+SELECT FirstName, LastName, COUNT(FirstName) OVER (PARTITION BY customers.CustomerId) as 'Number Of Orders', InvoiceID, InvoiceDate, CustomerID, BillingCountry
+FROM customers
+JOIN invoices
+ON customers.customerID = invoices.CustomerId
+WHERE Country = 'Brazil';
+
+
+
+SELECT FirstName, LastName, Title
+FROM Employees
+WHERE Title LIKE 'Sales%Agent';
+
+
+
+SELECT employees.FirstName, employees.LastName, Title, invoiceID
+FROM employees
+JOIN customers
+ON employees.EmployeeId = customers.SupportRepId
+JOIN invoices
+ON customers.CustomerId = invoices.CustomerId;
+
+
+
+
+SELECT customers.FirstName || ' ' || Customers.LastName as CustomerName, Country as CustomerCountry, employees.FirstName || ' ' || employees.LastName as EmployeeName, Title as EmployeeTitle, invoiceID
+FROM employees
+JOIN customers
+ON employees.EmployeeId = customers.SupportRepId
+JOIN invoices
+ON customers.CustomerId = invoices.CustomerId;
+
+
+
+SELECT COUNT(*)
+FROM Invoices
+WHERE InvoiceDate like '2009%';
+
+
+
+SELECT Name as TrackName, InvoiceLineID
+FROM tracks
+JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+ORDER BY InvoiceLineID;
+
+
+
+SELECT artists.name as ArtistName, tracks.Name as TrackName, InvoiceLineID
+
+FROM tracks
+JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+JOIN albums
+ON tracks.AlbumId = albums.AlbumId
+JOIN artists
+ON albums.ArtistId = artists.ArtistId
+
+ORDER BY InvoiceLineID;
+
+
+
+SELECT Tracks.Name as TracksName, Albums.Title as AlbumsName, media_types.Name as MediaTypes, genres.Name as Genre
+
+FROM albums
+JOIN tracks
+ON albums.AlbumId = tracks.AlbumId
+JOIN media_types
+ON tracks.MediaTypeId = media_types.MediaTypeId
+JOIN genres
+ON tracks.GenreId = genres.GenreId;
+
+
+
+SELECT employees.FirstName || ' ' || employees.LastName as EmployeesName,  ROUND(SUM(invoices.total), 2) as TotalSales
+
+FROM employees
+JOIN customers
+ON employees.EmployeeId = customers.SupportRepId
+JOIN invoices
+ON customers.CustomerId = invoices.CustomerId
+
+GROUP BY EmployeesName
+ORDER BY TotalSales DESC;
+
+
+
+SELECT employees.FirstName || ' ' || employees.LastName as EmployeesName,  ROUND(SUM(invoices.total), 2) as TotalSales
+
+FROM employees
+JOIN customers
+ON employees.EmployeeId = customers.SupportRepId
+JOIN invoices
+ON customers.CustomerId = invoices.CustomerId
+
+WHERE InvoiceDate like '2009%'
+GROUP BY EmployeesName
+ORDER BY TotalSales DESC;
+
