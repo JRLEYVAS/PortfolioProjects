@@ -1,0 +1,61 @@
+1)  List top 10 products with the most revenue
+
+SELECT product_name, sale_price, discount, revenue, ROUND(revenue/sale_price) as QuantitySold
+FROM finance
+LEFT Join info
+ON finance.product_id = info.product_id
+WHERE product_name <> 'None'
+ORDER BY revenue desc
+LIMIT 10;
+
+
+2) List top 10 products that had the most units sold
+
+SELECT product_name, ROUND(revenue/sale_price) as QuantitySold, sale_price, discount, revenue
+FROM finance
+LEFT Join info
+ON finance.product_id = info.product_id
+WHERE product_name <> 'None'
+ORDER BY QuantitySold desc, revenue desc
+LIMIT 10;
+
+
+3) How many products had similar ratings?
+
+SELECT real_rating, COUNT(real_rating) as ReviewCount
+FROM reviews
+GROUP BY real_rating
+HAVING real_rating IS NOT NULL
+ORDER BY real_rating desc;
+
+
+4) How did the top performers in revenue do in reviews? 
+
+SELECT product_name, revenue, real_rating
+FROM reviews
+JOIN info
+ON reviews.product_id = info.product_id
+JOIN finance
+ON reviews.product_id = finance.product_id
+WHERE real_rating AND product_name IS NOT NULL
+ORDER BY revenue desc;
+
+
+5) How did each brand contribute to the total revenue?
+
+SELECT brand, SUM(revenue)
+FROM brands
+JOIN Finance
+ON brands.product_id = finance.product_id
+GROUP BY Brand
+HAVING brand <> 'None';
+
+
+6) How did the products with the highest discount do in revenue? 
+
+SELECT product_name, discount, revenue
+FROM finance
+JOIN info
+ON finance.product_id = info.product_id
+WHERE discount IS NOT NULL
+ORDER BY discount desc, revenue desc
